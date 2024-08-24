@@ -1,7 +1,7 @@
 const arr = [21, 2, 3, 4, [[3], [4]]];
 
 // recursion
-Array.prototype.myFlat = function (depth = 1, current = 0) {
+Array.prototype.myFlat = function (depth = 1) {
   const result = [];
   let arr = this;
   function helper(arr, current = 0) {
