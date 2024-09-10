@@ -15,12 +15,13 @@ class TaskRunner {
       this.activePromise--;
       if (this.queue.length) {
         const nextTask = this.queue.shift();
-        this.execute(nextTask);
+        await this.execute(nextTask);
       }
     }
   }
 
   async push(promise) {
+    console.log("object");
     if (this.activePromise < this.limit) {
       this.execute(promise);
     } else {
