@@ -1,22 +1,19 @@
 function cachedApiCall(time) {
   const cachedApi = {};
-  return async function (url, config = {}) {
+  return function (url, config = {}) {
     const key = `${url}${JSON.stringify(config)}`;
-    const entry = cachedApi[key];
-    if (entry === undefined || Date.now() > entry.expiry) {
-      console.log("Making Fresh API Call");
-    }
-    try {
-      let resp = await fetch(url, config);
-      resp = await resp.JSON();
+    if (cachedApi[key] === undefined || Date.now() > cachedApi[key].expiry) {
+      console.log("Making fresh api request");
+      const promise = fetch(url, config).then((res) => res.json());
       cachedApi[key] = {
-        value: resp,
+        result: promise,
         expiry: Date.now() + time
       };
-    } catch (error) {
-      console.log(error);
+      return promise;
+    } else {
+      console.log("getting cached values...");
+      return cachedApi[key].result;
     }
-    return cachedApi[key].value;
   };
 }
 

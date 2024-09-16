@@ -21,7 +21,6 @@ class TaskRunner {
   }
 
   async push(promise) {
-    console.log("object");
     if (this.activePromise < this.limit) {
       this.execute(promise);
     } else {
