@@ -8,7 +8,6 @@ String.prototype.mySplit = function (delimiter) {
     if (i >= string.length) return;
     const index = str.indexOf(delimiter);
     if (index !== -1) {
-      console.log(index);
       result.push(str.slice(0, index));
       helper(str.slice(index + delimiter.length), index + delimiter.length);
     } else {
