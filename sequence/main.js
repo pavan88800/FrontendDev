@@ -1,7 +1,6 @@
 // TODO: It looks like you're trying to implement a sequence of asynchronous functions using a callback pattern. However, you cannot use await inside the forEach loop directly, as it doesn't support asynchronous operations in that way. Instead, you can use a for...of loop or the map method
 
-// can use await keyword in forEach
-// await only works  for for of loop  and map
+// await only works  for, and for of loop, regular loop, and map
 // important forEach doesn't work for async operations
 async function sequence(task, callback) {
   const result = [];
