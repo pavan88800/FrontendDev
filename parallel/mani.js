@@ -27,3 +27,28 @@ parallel(
     console.log("success", success);
   }
 );
+
+function parallel(funcs) {
+  // your code here
+  const result = [];
+  let taskCompleted = 0;
+  let isHasError = false;
+  return function (callback, initialData) {
+    let res = initialData;
+    funcs.forEach((promise, index) => {
+      promise((err, newData) => {
+        if (isHasError) return;
+        if (err) {
+          isHasError = true;
+          callback(err, undefined);
+        } else {
+          result[index] = newData;
+          taskCompleted++;
+        }
+        if (taskCompleted === funcs.length) {
+          callback(undefined, result);
+        }
+      }, res);
+    });
+  };
+}
