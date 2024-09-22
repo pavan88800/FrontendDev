@@ -1,3 +1,10 @@
+// TODO: for parallel does use async await because async wait until the promise is resolved or rejected
+// TODO: this means sequence
+// TODO: recursion also sequence does use in the parallel
+
+// Yes, that's correct! When you run asynchronous operations in parallel, they do not wait for each other to complete. Instead, they start executing simultaneously, and the program continues without pausing for any of the operations to finish.
+
+// parallel does not await for previous state it keep going
 function parallel(task, callback) {
   const result = [];
   const errors = [];
