@@ -44,3 +44,68 @@ taskRunner.registerTask("D", taskD, ["A", "B"]);
 taskRunner.registerTask("E", taskE, ["C", "D"]);
 
 taskRunner.executeTask();
+
+const schedules = [
+  {
+    id: "a",
+    dependencies: ["b", "c"]
+  },
+
+  {
+    id: "b",
+    dependencies: []
+  },
+
+  {
+    id: "c",
+    dependencies: []
+  },
+  {
+    id: "d",
+    dependencies: []
+  },
+  {
+    id: "e",
+    dependencies: []
+  },
+  {
+    id: "f",
+    dependencies: []
+  }
+];
+
+function removeTask(id) {
+  schedules.forEach((el) => {
+    const index = el.dependencies.indexOf(id);
+    if (index !== -1) {
+      el.dependencies.splice(index, 1);
+    }
+  });
+}
+
+let totalTaskCompleted = 0;
+let processed = {}; // Track completed tasks
+
+function solution(taskArr) {
+  while (totalTaskCompleted < taskArr.length) {
+    let taskFound = false;
+
+    for (let i = 0; i < taskArr.length; i++) {
+      const task = taskArr[i];
+      if (!task.dependencies.length && !processed[task.id]) {
+        console.log(task.id);
+        processed[task.id] = true; // Mark as processed
+        removeTask(task.id); // remove dependencies
+        taskFound = true;
+        totalTaskCompleted++;
+      }
+    }
+
+    if (!taskFound) {
+      console.log("Task not found");
+      return; // Exit loop if no tasks were processed in this round
+    }
+  }
+}
+
+solution(schedules);
