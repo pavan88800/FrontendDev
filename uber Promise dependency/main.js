@@ -92,6 +92,7 @@ function solution(taskArr) {
 
     for (let i = 0; i < taskArr.length; i++) {
       const task = taskArr[i];
+      //it runs none dependencies code  here
       if (!task.dependencies.length && !processed[task.id]) {
         console.log(task.id);
         processed[task.id] = true; // Mark as processed
