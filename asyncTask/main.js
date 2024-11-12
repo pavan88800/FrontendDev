@@ -90,3 +90,47 @@ class TaskRunner {
     });
   }
 }
+
+// part 2 using recursion
+class TaskRunner {
+  constructor() {
+    this.currentTask = 0;
+    this.queue = [];
+  }
+  addTask(callback) {
+    this.queue.push(callback);
+  }
+
+  run() {
+    return new Promise((resolve, reject) => {
+      const helper = () => {
+        if (this.queue.length === 0) {
+          resolve();
+          return;
+        }
+        const task = this.queue.shift();
+        task()
+          .then((data) => {
+            helper();
+          })
+          .catch((err) => {
+            console.error(err);
+            helper();
+          });
+      };
+      helper();
+    });
+  }
+}
+
+// const taskQueue = new TaskRunner();
+// const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+// taskQueue.addTask(() => delay(1000).then(() => console.log("Task 1 done")));
+// taskQueue.addTask(() => delay(1300).then(() => console.log("Task 3 done")));
+// taskQueue.addTask(() => delay(1400).then(() => console.log("Task 4 done")));
+// taskQueue.addTask(() => Promise.reject("Rejected"));
+
+// taskQueue.run().then(() => console.log("All tasks completed."));
+// taskQueue.addTask(() => delay(1500).then(() => console.log("Task 5 done")));
+// taskQueue.addTask(() => delay(1600).then(() => console.log("Task 6 done")));
+// // taskQueue.run().then(() => console.log("New All tasks completed."));
