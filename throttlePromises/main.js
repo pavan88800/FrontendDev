@@ -1,3 +1,9 @@
+// Yes, exactly! You’re spot on:
+
+// With while: It will fill up to max tasks immediately. If max = 3, while will start three tasks right away in a single call to helper, quickly reaching the maximum concurrency.
+
+// With if: It fills tasks gradually. It will start one task, then add more tasks one at a time as previous tasks complete, until it eventually reaches up to max tasks in parallel.
+
 function throttlePromises(funcs, max) {
   return new Promise((resolve, reject) => {
     const result = [];
