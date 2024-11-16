@@ -82,3 +82,29 @@ await call("https://jsonplaceholder.typicode.com/todos/2", {});
 setTimeout(() => {
   call("https://jsonplaceholder.typicode.com/todos/100", {});
 }, 500);
+
+// 4 please avoid async await while caching api calls
+function cachedApiCall(delay) {
+  const cache = {};
+  return function (url, config = {}) {
+    const key = `${url}${JSON.stringify(config)}`;
+    const value = cache[key];
+    if (!value || Date.now() > value.expiry) {
+      try {
+        console.log("Make API call");
+        const promise = fetch(url, config).then((res) => res.json());
+        cache[key] = {
+          result: promise,
+          expiry: Date.now() + delay
+        };
+        return cache[key].result;
+      } catch (error) {
+        delete cache[key];
+        console.error(error);
+      }
+    } else {
+      console.log("cached response");
+      return cache[key].result;
+    }
+  };
+}
