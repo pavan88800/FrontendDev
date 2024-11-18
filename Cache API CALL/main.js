@@ -83,28 +83,53 @@ setTimeout(() => {
   call("https://jsonplaceholder.typicode.com/todos/100", {});
 }, 500);
 
+// Why Store the Promise?
+// When an API call is initiated, the response takes time to resolve (because the server needs time to respond).
+
+// If you don’t store the promise, and another call with the same key is made while the first call is still in progress:
+
+// It will trigger a new API call because the cache doesn't yet contain the resolved data.
+// This leads to redundant API requests.
+// If you store the promise, subsequent calls with the same key will:
+// Reuse the in-progress promise instead of starting a new API request.
+// Wait for the promise to resolve and then receive the same data as the first call.
+
 // 4 please avoid async await while caching api calls
-function cachedApiCall(delay) {
+function cacheApiCall(delay) {
   const cache = {};
   return function (url, config = {}) {
     const key = `${url}${JSON.stringify(config)}`;
+    //Check the cache
     const value = cache[key];
     if (!value || Date.now() > value.expiry) {
       try {
-        console.log("Make API call");
-        const promise = fetch(url, config).then((res) => res.json());
+        console.log("Making New API call");
+        let promise = fetch(url, config).then((data) => {
+          return data.json();
+        });
         cache[key] = {
           result: promise,
           expiry: Date.now() + delay
         };
-        return cache[key].result;
+        return promise;
       } catch (error) {
-        delete cache[key];
         console.error(error);
+        delete cache[key];
       }
     } else {
-      console.log("cached response");
+      console.log("Cached response");
       return cache[key].result;
     }
   };
 }
+
+// const call = cacheApiCall(1500);
+call("https://jsonplaceholder.typicode.com/todos/1").then((data) => {
+  console.log(data);
+});
+call("https://jsonplaceholder.typicode.com/todos/1").then((data) => {
+  console.log(data);
+});
+call("https://jsonplaceholder.typicode.com/todos/2").then((data) => {
+  console.log(data);
+});
