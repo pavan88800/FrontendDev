@@ -19,8 +19,8 @@ function throttlePromises(funcs, max) {
         funcs[currentIndex++]()
           .then((data) => {
             result[count++] = data;
-            callNext();
             activePromises--;
+            callNext();
           })
           .catch((err) => {
             reject(err);
