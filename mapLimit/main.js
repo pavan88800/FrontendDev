@@ -49,3 +49,28 @@ function mapLimit(input, limit, fn, callback) {
   }
   execute();
 }
+
+function chunk(arr, limit) {
+  const result = [];
+  let i = 0;
+  while (i < arr.length) {
+    result.push(arr.slice(i, limit + i));
+    i = limit + i;
+  }
+  return result;
+}
+
+// this from greatFrontend question and answer
+export default async function mapAsyncLimit(iterable, callbackFn, size) {
+  let result = [];
+  const batch = chunk(iterable, size);
+  for (let items of batch) {
+    const chunkResults = await Promise.all(
+      items.map((el) => {
+        return callbackFn(el);
+      })
+    );
+    result = result.concat(chunkResults);
+  }
+  return result;
+}
