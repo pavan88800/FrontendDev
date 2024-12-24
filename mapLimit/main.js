@@ -74,3 +74,26 @@ export default async function mapAsyncLimit(iterable, callbackFn, size) {
   }
   return result;
 }
+const mutualFriends = {
+  a: ["b", "c"],
+  b: ["d", "g"],
+  d: ["p", "q"],
+  l: ["x", "y"]
+};
+
+function findMutualFrn(mutualFriends, person) {
+  const res = [];
+  function helper(person) {
+    const current = mutualFriends[person];
+    if (current && current.length > 0) {
+      for (let item of current) {
+        res.push(item);
+        helper(item);
+      }
+    }
+  }
+  helper(person);
+  return res;
+}
+
+console.log(findMutualFrn(mutualFriends, "d"));
