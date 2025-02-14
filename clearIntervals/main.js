@@ -5,6 +5,7 @@ function CreateSetInterval() {
     let idx = timer++;
     function helper(...args) {
       timerMap[idx] = setTimeout(function () {
+        if (!timerMap[id]) return;
         callback(...args);
         if (timerMap[idx]) {
           helper();

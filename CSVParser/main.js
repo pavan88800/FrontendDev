@@ -5,9 +5,7 @@ function parseAndTransformCSV(csvString) {
 
   for (let i = 1; i < row.length; i++) {
     const value = row[i].split(", ");
-    console.log(value);
     const records = {};
-
     header.forEach((header, index) => {
       records[header] = value[index];
     });
