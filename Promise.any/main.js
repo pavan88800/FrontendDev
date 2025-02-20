@@ -1,47 +1,22 @@
-function any(promises) {
-  // your code here
-  const errorList = [];
-  let allError = 0;
-  return new Promise((resolve, reject) => {
-    promises.forEach((promise, index) => {
-      Promise.resolve(promise)
-        .then((data) => {
-          resolve(data);
-        })
-        .catch((err) => {
-          errorList[index] = err;
-        })
-        .finally(() => {
-          allError++;
-          if (promises.length === allError) {
-            reject(
-              new AggregateError(
-                "No Promise in Promise.any was resolved",
-                errorList
-              )
-            );
-          }
-        });
-    });
-  });
-}
+// ❌ finally() should not be used here
+// finally() executes regardless of success or failure, but we only want to count errors inside .catch().
+// If a promise resolves, there's no need to increment isAllError.
 
-// Promise 2
 function any(promises) {
   // your code here
-  let isError = 0;
+  let isAllError = 0;
   const errorList = [];
   return new Promise((resolve, reject) => {
-    promises.forEach((el, index) => {
-      Promise.resolve(el)
+    promises.forEach((item, index) => {
+      Promise.resolve(item)
         .then((data) => {
           resolve(data);
         })
         .catch((err) => {
           errorList[index] = err;
-          isError++;
-          if (promises.length === isError) {
-            reject(new AggregateError(errorList, "All promises were rejected"));
+          isAllError++;
+          if (isAllError === promises.length) {
+            reject(new AggregateError("All promises were rejected", errorList));
           }
         });
     });
