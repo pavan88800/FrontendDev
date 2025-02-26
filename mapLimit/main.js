@@ -141,6 +141,9 @@ function getNameById(id, callback) {
  * always call activeCount and processNext() inside callback because they will execute immediately instead of waiting for the async task to complete.
  */
 //new
+// 📌 currentIndex starts new tasks 🏃‍♂️
+// 📌 isCompleted checks when all are finished ✅
+// That’s why mapLimit needs both! 🚀
 
 //TODO? this correct
 function mapLimit(promise, maxLimit, iterateeFn, callback) {

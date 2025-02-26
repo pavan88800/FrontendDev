@@ -51,26 +51,56 @@ function temp() {
 temp(40);
 
 //Question 4 controlPromise promise
-function controlPromise() {
-  let isCanceled = false;
-  let timer;
-  const promiseObject = new Promise((resolve, reject) => {
-    timer = setTimeout(() => {
-      if (!isCanceled) {
-        resolve("resolved data");
-      }
-    }, 2000);
-  }).catch((err) => {
-    if (!isCanceled) {
-      reject(err);
-    }
-  });
-  promiseObject.cancel = function () {
-    isCanceled = true;
-    clearTimeout(timer);
-  };
-  return promiseObject;
+class CanceledPromiseError extends Error {
+  constructor() {
+    super("Promise has been canceled");
+    this.name = "CanceledPromiseError";
+  }
 }
+Promise.cancelable = function (promise) {
+  let isCancelled = false;
+  const wrappedPromise = new Promise((resolve, reject) => {
+    promise
+      .then((value) => {
+        if (!isCancelled) {
+          resolve(value);
+        } else {
+          reject(new CanceledPromiseError("Promise canceled"));
+        }
+      })
+      .catch((err) => {
+        if (!isCancelled) {
+          reject(err);
+        }
+      });
+  });
+
+  wrappedPromise.cancel = () => {
+    isCancelled = true;
+  };
+  return wrappedPromise;
+};
+
+// function controlPromise() {
+//   let isCanceled = false;
+//   let timer;
+//   const promiseObject = new Promise((resolve, reject) => {
+//     timer = setTimeout(() => {
+//       if (!isCanceled) {
+//         resolve("resolved data");
+//       }
+//     }, 2000);
+//   }).catch((err) => {
+//     if (!isCanceled) {
+//       reject(err);
+//     }
+//   });
+//   promiseObject.cancel = function () {
+//     isCanceled = true;
+//     clearTimeout(timer);
+//   };
+//   return promiseObject;
+// }
 
 const promiseObject = controlPromise();
 

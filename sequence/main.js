@@ -39,6 +39,7 @@ type AsyncFunc = (
  * @param {AsyncFunc[]} funcs
  * @return {(callback: Callback) => void}
  */
+
 function sequence(funcs) {
   // your code here
   let completed = 0;
@@ -62,6 +63,8 @@ function sequence(funcs) {
   };
 }
 
+// ✅ Yes! You're wrapping each callback-based function inside a Promise to make it work with await,
+// ensuring sequential execution in an async function.
 function sequence(funcs) {
   // your code here
   return async function (callback, initialData) {
