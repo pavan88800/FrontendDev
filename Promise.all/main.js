@@ -9,6 +9,10 @@
 // It works even if promises complete in random order.
 // Now your Promise.MyAll() works exactly like Promise.all()
 
+// 🔹---------- Quick Rule of Thumb:----------
+// Use Promise.all() → When all API calls can be made simultaneously without waiting for the others. (Faster execution)
+// Avoid Promise.all() → When one API call depends on the result of another. (Use sequential await instead)
+
 function all(promises) {
   // your code here
   const result = [];

@@ -145,29 +145,35 @@ function getNameById(id, callback) {
 // 📌 isCompleted checks when all are finished ✅
 // That’s why mapLimit needs both! 🚀
 
+// currentIndex → Tracks how many tasks have been started.
+// isCompleted → Tracks how many tasks have been completed
+
 //TODO? this correct
-function mapLimit(promise, maxLimit, iterateeFn, callback) {
+function mapLimit(inputs, limit, iterateeFn, callback) {
   let activePromise = 0;
-  let currentIndex = 0;
-  let isCompleted = 0;
+  let currentIndex = 0; // Tracks how many tasks have started
+  let completedCount = 0; // Tracks how many tasks have finished
   const result = [];
-  function promiseNext() {
-    if (promise.length === isCompleted) {
+
+  function processNext() {
+    if (completedCount === inputs.length) {
       callback(result);
+      return;
     }
-    while (activePromise < maxLimit && currentIndex < promise.length) {
+
+    while (activePromise < limit && currentIndex < inputs.length) {
       activePromise++;
-      const task = promise[currentIndex++];
-      iterateeFn(task, (res) => {
-        result[isCompleted++] = res;
+      const index = currentIndex++; // Capture correct index for storing the result
+      iterateeFn(inputs[index], (res) => {
+        result[index] = res; // Store result in correct order
         activePromise--;
-        promiseNext();
+        completedCount++; // Increment only when a task finishes
+        processNext();
       });
     }
   }
-  promiseNext();
+  processNext();
 }
-
 mapLimit([1, 2, 3, 4, 5], 2, getNameById, (allResults) => {
   console.log("output: is ", allResults);
 });
@@ -215,3 +221,16 @@ async function mapLimit(promise, maxLimit, iterateeFn, callback) {
 mapLimit([1, 2, 3, 4, 5], 2, getNameById, (allResults) => {
   console.log("output: is ", allResults);
 });
+
+// Batch Execution Flow for mapLimit([1, 2, 3, 4, 5], 2, iterateeFn, callback)
+// Step	Executing Tasks
+// Start	Runs [1, 2]
+// Wait	Both finish
+// Next	Runs [3, 4]
+// Wait	Both finish
+// Next	Runs [5]
+// Done	All done
+// ⛔ Problem: The next batch only starts after the entire previous batch completes.
+
+// If one task in a batch is slow, the next batch waits for it, even if other tasks in the batch have finished.
+// This does not fully utilize the available concurrency.
