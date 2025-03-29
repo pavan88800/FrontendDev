@@ -58,9 +58,52 @@ class pubsub {
   }
 }
 
-const sub = new pubsub();
+// const sub = new pubsub();
 sub.subscribeAsync("event1").then((data) => {
   console.log("Async subscription resolved with data:", data);
 });
 
 sub.publish("event1", "pavan pavu");
+
+// fellow up questions
+class EventEmitter {
+  constructor() {
+    this.event = {};
+  }
+  subscribe(eventName, callback, priority = 0) {
+    if (!this.event.hasOwnProperty(eventName)) {
+      this.event[eventName] = [];
+    }
+    this.event[eventName].push({ callback, priority });
+    this.event[eventName].sort((a, b) => b.priority - a.priority);
+
+    return () => {
+      this.event[eventName] = this.event[eventName].filter(
+        (cb) => cb !== callback
+      );
+    };
+  }
+
+  publish(eventName, ...args) {
+    if (this.event[eventName]) {
+      this.event[eventName].forEach(({ priority, callback }) => callback());
+    }
+  }
+
+  publishAll() {
+    for (let [index, value] of Object.entries(this.event)) {
+      value.forEach((cb) => cb());
+    }
+  }
+}
+
+const sub = new EventEmitter();
+sub.subscribe("event1", () => console.log("pavan Subscribe"), 10);
+sub.subscribe("event1", () => console.log("Anitha Subscribe"), 1);
+const unSubscribe = sub.subscribe(
+  "event1",
+  () => console.log("non Subscribe"),
+  1
+);
+// unSubscribe();
+sub.publish("event1");
