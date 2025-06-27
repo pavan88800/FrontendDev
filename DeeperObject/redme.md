@@ -37,6 +37,8 @@ temp["name"] = "Pavan";   // resultObj = { user: { name: "Pavan" } }
 ```
 
 🧠 Summary
+
+```
 temp is used to navigate nested levels.
 
 temp = temp[el] means: go one level deeper.
@@ -44,3 +46,4 @@ temp = temp[el] means: go one level deeper.
 Modifying temp still updates resultObj.
 
 Useful for dynamic object creation from dot-separated strings.
+```
