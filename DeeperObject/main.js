@@ -7,33 +7,6 @@
 </form>; */
 }
 
-# 📌 Understanding `temp = temp[el]` in Nested Object Construction
-
-## ✅ Why we use `temp`
-
-When building deeply nested objects from paths like `"user.address.city"`, we use a temporary pointer `temp` to:
-
-- Navigate level-by-level into the object.
-- Dynamically build nested structures.
-- Keep `resultObj` pointing to the root, while `temp` walks inside.
-
----
-
-## 🔁 What `temp = temp[el]` does
-
-This line **moves the `temp` pointer one level deeper** in the object.
-
-### Example:
-```js
-let resultObj = {};
-let temp = resultObj;
-
-temp["user"] = {};       // resultObj = { user: {} }
-temp = temp["user"];     // temp now points to resultObj.user
-
-temp["name"] = "Pavan";  // modifies resultObj.user.name
-
-
 function solution() {
   const inputs = document.querySelectorAll("input");
   let result = {};
@@ -48,8 +21,9 @@ function solution() {
       }
       if (path.length - 1 === index) {
         temp[key] = value;
+      } else {
+        temp = temp[key];
       }
-      temp = temp[key];
     });
   });
   return result;
