@@ -2,7 +2,7 @@
 
 1. Loop Execution Flow
 
-`**for (let i = 1; i < rows.length; i++)**`
+`for (let i = 1; i < rows.length; i++)`
 
 Starts at i = 1 (skips header).
 
