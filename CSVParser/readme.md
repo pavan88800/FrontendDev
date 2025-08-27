@@ -166,7 +166,7 @@ Checks and updates userMap.
 
 Pushes purchase.
 
-## ✅ Only after finishing the entire block → outer for does i++.
+## ✅ Only after finishing the entire block → outer for loop does i++.
 
 ---
 
