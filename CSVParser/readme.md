@@ -119,13 +119,13 @@ for (let i = 1; i < rows.length; i++) {
 
 1. Init → let i = 1 runs only once at start.
 
-2. Condition check → `**i < rows.length**`.
+2. Condition check → `i < rows.length`.
    . If true → run loop body.
    . If false → exit loop.
 
-3. Run body → executes your code (creates `**records1**`, runs `**forEach**`, etc).
+3. Run body → executes your code (creates `records1`, runs `forEach`, etc).
 
-4. Increment step → `**i++**` happens AFTER loop body finishes completely.
+4. Increment step → `i++` happens AFTER loop body finishes completely.
 
 5. Go back to condition check, repeat.
 
@@ -156,7 +156,7 @@ Execution Flow:
 
 ## After forEach:
 
-Control returns to the next line inside the for body (not to i++ yet). `** keep in mind for loop body not to i++ yet.**`
+Control returns to the next line inside the for body (not to i++ yet). `keep in mind for loop body not to i++ yet`
 
 Executes destructuring (const { quantity, price, ... } = records;).
 
