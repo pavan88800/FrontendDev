@@ -169,3 +169,38 @@ Pushes purchase.
 ## ✅ Only after finishing the entire block → outer for does i++.
 
 ---
+
+```js
+function csvParser(str) {
+  const rows = str.split("\n");
+  const header = rows[0].split(", ");
+  const userMap = {};
+  for (let i = 1; i < rows.length; i++) {
+    let records = {};
+    const list = rows[i].split(", ");
+    header.forEach((item, index) => {
+      records[item] = list[index];
+    });
+
+    const { quantity, price, userId, name, item } = records;
+    let qty = Number(quantity);
+    let prices = Number(price);
+    if (!userMap[userId]) {
+      userMap[userId] = {
+        userId: userId,
+        name: name,
+        purchases: []
+      };
+    }
+    userMap[userId].purchases.push({
+      item,
+      totalQty: qty,
+      totalPrice: qty * prices
+    });
+  }
+
+  return Object.values(userMap);
+}
+
+console.log(csvParser(csv2));
+```
