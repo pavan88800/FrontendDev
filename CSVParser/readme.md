@@ -156,7 +156,7 @@ Execution Flow:
 
 ## After forEach:
 
-Control returns to the next line inside the for body (not to i++ yet). `keep in mind for loop body not to i++ yet`
+Control returns to the next line inside the for body (not to i++ yet). `keep in mind for loop body not i++ yet`
 
 Executes destructuring (const { quantity, price, ... } = records;).
 
@@ -183,8 +183,8 @@ function csvParser(str) {
     });
 
     const { quantity, price, userId, name, item } = records;
-    let qty = Number(quantity);
-    let prices = Number(price);
+    let qty = !isNaN(quantity) ? Number(quantity) : quantity;
+    let prices = !isNaN(price) ? Number(price) : price;
     if (!userMap[userId]) {
       userMap[userId] = {
         userId: userId,
