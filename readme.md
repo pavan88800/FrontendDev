@@ -5,8 +5,11 @@
 ## 1. Understand the Problem First
 
 . What exactly am I trying to solve?
+
 . What are the inputs and expected outputs?
+
 . What edge cases might exist?
+
 . Are there any constraints or requirements I'm missing?
 
 ---
@@ -14,8 +17,11 @@
 ## 2. Plan Before Coding
 
 . Break the problem into smaller steps
+
 . Think about the data flow
+
 . Consider what could go wrong
+
 . Sketch out the logic first
 
 ## While Writing Code
