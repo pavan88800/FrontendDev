@@ -81,6 +81,16 @@ Key part: Arrays in JS can have holes (sparse arrays).
 
 This check ensures that the index actually exists before using it.
 
+`**i in this**` checks whether the index i exists as a property of the array object (this).
+
+## What i in arr means
+
+It checks if the index exists in the array (as a property).
+
+✅ If it exists → true (even if the value is undefined).
+
+❌ If it doesn’t exist → false (that’s a hole).
+
 Example:-
 
 ```js
