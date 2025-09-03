@@ -169,3 +169,49 @@ const doubled = nums.myMap((x) => x * 2);
 console.log(doubled); // [2, 6]
 console.log(nums); // [1, , 3] (unchanged)
 ```
+
+---
+
+## 📝 Lifetime Note: How map Builds the Result
+
+map never changes the original array.
+It always builds a new array called result.
+
+Each iteration does 3 steps:
+
+Takes the current element (this[i]).
+
+Passes it into your callback → cb(this[i], i, this).
+
+Whatever the callback returns → gets pushed into result.
+
+Result grows step by step.
+Example with [1, 2, 3] and x \* 10:
+
+Iteration 1 → returns 10 → result = [10]
+
+Iteration 2 → returns 20 → result = [10, 20]
+
+Iteration 3 → returns 30 → result = [10, 20, 30]
+
+At the end → map returns the result array.
+
+---
+
+## How map runs:-
+
+map is synchronous (normal JavaScript loop).
+
+It goes one iteration at a time:
+
+Runs the callback for the current element.
+
+Waits for that callback to finish returning a value.
+
+Pushes that return value into result.
+
+Then moves to the next iteration.
+
+It does not jump ahead — it always finishes the current iteration before moving on.
+
+---
