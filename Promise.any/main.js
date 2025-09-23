@@ -16,7 +16,7 @@ function any(promises) {
           errorList[index] = err;
           isAllError++;
           if (isAllError === promises.length) {
-            reject(new AggregateError("All promises were rejected", errorList));
+            reject(new AggregateError(errorList, "All promises were rejected"));
           }
         });
     });
