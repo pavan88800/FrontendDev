@@ -1,6 +1,6 @@
 const createSetTimeout = () => {
   let idx = 0;
-  let timerMap = {};
+  let timerMap = {}; //timerMap is used to track which setTimeout calls are currently active.
   const mySetTimeout = (callback, delay) => {
     const id = idx++; // unique
     timerMap[id] = true;
@@ -13,7 +13,8 @@ const createSetTimeout = () => {
         requestIdleCallback(helper);
       }
     }
-    requestIdleCallback(helper);
+    requestIdleCallback(helper); // call this when browser is idle
+    //NOTE: if you call this helper() directly it leads to infinite
     return id;
   };
   const myClearTimeout = (id) => {
