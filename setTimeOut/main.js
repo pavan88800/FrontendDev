@@ -2,13 +2,16 @@ const createSetTimeout = () => {
   let idx = 0;
   let timerMap = {}; //timerMap is used to track which setTimeout calls are currently active.
   const mySetTimeout = (callback, delay) => {
+    if (typeof callback !== "function") {
+      throw new TypeError(`${callback} must be a function`);
+    }
     const id = idx++; // unique
     timerMap[id] = true;
     const start = Date.now() + delay;
     function helper(...args) {
       if (!timerMap[id]) return;
       if (Date.now() > start) {
-        callback.call(this, ...args);
+        callback(...args);
       } else {
         requestIdleCallback(helper);
       }
