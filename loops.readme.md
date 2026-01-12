@@ -2,7 +2,7 @@
 
 ## ✅ Loops that work with async/await (sequential)
 
-## These pause each iteration until `**await**` finishes:
+## These pause each iteration until **await** finishes:
 
 ```js
 for (let i = 0; i < arr.length; i++) { await ... }
