@@ -120,3 +120,88 @@ Remember:
 ✅ Parallel = 2 variables (index + completed)
 ✅ Always use tasks.length not tasks.length - 1
 Just remember the mental model - if tasks wait for each other, use one counter. If they run together, you need two counters to track what started vs what finished! 🔥
+
+---
+
+# Async `try/catch` in Loops – Simple & Interview‑Safe
+
+---
+
+## `try/catch` **outside** the loop → loop **stops**
+
+If you put **one `try/catch` outside (above) the loop**, the loop will **stop on the first rejected promise**.
+
+### Why?
+
+Because the rejection is **no longer handled per iteration**.
+Once an await throws and it isn’t caught inside the loop, execution jumps to the outer catch and the loop **exits immediately**.
+
+### Example
+
+```js
+async function run(tasks) {
+  try {
+    for (let task of tasks) {
+      const result = await task();
+      console.log(result);
+    }
+  } catch (err) {
+    console.error("Error:", err);
+  }
+}
+```
+
+**Behavior**
+
+- Task 1 ✅ runs
+- Task 2 ❌ rejects
+- Loop ❌ stops
+- Task 3 🚫 never runs
+
+---
+
+## `try/catch` **inside** the loop → loop **continues**
+
+If you put `try/catch` **inside the loop**, the loop **will not stop** when a promise rejects.
+
+### Why?
+
+Because each iteration **handles its own promise**.
+**await** **throws, it’s caught inside the loop, so the loop continues.” ✅**.
+
+### Example
+
+```js
+async function run(tasks) {
+  for (let task of tasks) {
+    try {
+      const result = await task();
+      console.log(result);
+    } catch (err) {
+      console.error("Error:", err);
+    }
+  }
+}
+```
+
+**Behavior**
+
+- Task 1 ✅ runs
+- Task 2 ❌ rejects
+- Task 3 ✅ still runs
+
+---
+
+## One‑line rule (remember this)
+
+> `await` throws → **nearest `try/catch` decides whether the loop continues or stops**.
+
+---
+
+## Takeaway
+
+- `try/catch` placement controls **flow**, not just error handling
+- **Inside loop** → continue on error
+- **Outside loop** → fail fast
+
+That’s it. Clean. Interview‑safe. 💯
